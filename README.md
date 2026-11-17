@@ -2,7 +2,7 @@
 
 Real-time multiplayer draw-and-guess game. React + Vite client, Node/Express + Socket.IO server.
 
-**Live URL:**
+**Live URL : [scribblify-9zyp.onrender.com](https://scribblify-9zyp.onrender.com/)**
 
 ## Run locally
 
