@@ -1,0 +1,36 @@
+import { io } from 'socket.io-client';
+const url = 'http://localhost:3001';
+const a = io(url), b = io(url);
+const log = (...x) => console.log(...x);
+const wait = (ms) => new Promise(r => setTimeout(r, ms));
+const ack = (s, ev, p) => new Promise(r => s.emit(ev, p, r));
+let aOpts, bState, aEnd, over;
+a.on('round_start', d => { if (d.wordOptions) aOpts = d.wordOptions; });
+b.on('game_state', s => { bState = s; });
+b.on('round_end', d => { aEnd = d; });
+b.on('game_over', d => { over = d; });
+const draws = [];
+b.on('draw_data', d => draws.push(d.type));
+
+const r1 = await ack(a, 'create_room', { hostName: 'Alice', playerId: 'alice-id-001', settings: { rounds: 2, drawTime: 15, wordCount: 2, hints: 1 } });
+log('create', r1.ok, r1.roomId);
+const r2 = await ack(b, 'join_room', { roomId: r1.roomId, playerName: 'Bob', playerId: 'bob-id-0002' });
+log('join', r2.ok);
+a.emit('start_game');
+await wait(300);
+log('drawer options', aOpts);
+log('guesser sees word?', bState.word, '| phase', bState.phase);
+a.emit('word_chosen', { word: aOpts[0] });
+await wait(200);
+log('guesser mask', bState.mask?.join(''), 'phase', bState.phase);
+a.emit('draw_start', { x: .1, y: .1, color: '#ff0000', size: 8 });
+a.emit('draw_move', { x: .2, y: .2 }); a.emit('draw_end');
+b.emit('draw_start', { x: .5, y: .5, color: '#000000', size: 8 }); // guesser must be ignored
+await wait(200);
+log('b received draw events', draws.join(','));
+b.emit('guess', { text: 'wrong' });
+b.emit('guess', { text: '  ' + aOpts[0].toUpperCase() + ' ' });
+await wait(400);
+log('round_end reason', aEnd?.reason, 'word', aEnd?.word, 'scores', JSON.stringify(aEnd?.scores));
+a.close(); b.close();
+process.exit(0);

@@ -1,0 +1,7 @@
+{
+  "animals": ["cat","dog","elephant","giraffe","penguin","dolphin","butterfly","octopus","kangaroo","owl","snake","turtle","rabbit","lion","spider","shark","parrot","horse","bee","crab"],
+  "objects": ["umbrella","bicycle","guitar","clock","scissors","camera","candle","glasses","backpack","telephone","key","lamp","hammer","ladder","balloon","laptop","mirror","bottle","chair","crown"],
+  "actions": ["swimming","sleeping","dancing","cooking","painting","jumping","reading","fishing","running","laughing","climbing","singing","skiing","sneezing","surfing"],
+  "food": ["pizza","burger","ice cream","banana","watermelon","sandwich","popcorn","donut","cake","carrot","pancake","hot dog","cheese","egg","cookie"],
+  "places": ["castle","lighthouse","pyramid","volcano","bridge","island","farm","airport","school","hospital","rainbow","waterfall","desert","igloo","windmill"]
+}
